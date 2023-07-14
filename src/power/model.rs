@@ -8,7 +8,7 @@ use serde::{Deserialize,Serialize};
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Power {
     pub series_id: i32,
-    pub value1: i32, 
+    pub value: i32, 
     pub timestamp: NaiveDateTime,
     pub source_id: i32,
 }
@@ -16,7 +16,7 @@ pub struct Power {
 #[derive(Insertable)]
 #[diesel(table_name = time_series)]
 pub struct NewPower<'a> {
-    pub value1: &'a i32,
+    pub value: &'a i32,
     pub timestamp: &'a NaiveDateTime,
     pub source_id: &'a i32,
 }

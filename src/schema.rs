@@ -2,9 +2,9 @@
 
 diesel::table! {
     source (source_id) {
-        source_id -> Nullable<Integer>,
-        name -> Nullable<Text>,
-        unit -> Nullable<Text>,
+        source_id -> Integer,
+        name -> Text,
+        unit -> Text,
     }
 }
 
@@ -12,7 +12,7 @@ diesel::table! {
     time_series (series_id) {
         series_id -> Integer,
         timestamp -> Timestamp,
-        value1 -> Integer,
+        value -> Integer,
         source_id -> Integer,
     }
 }

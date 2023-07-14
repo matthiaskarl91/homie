@@ -3,6 +3,7 @@ use diesel::SqliteConnection;
 
 pub mod schema;
 mod power;
+mod source;
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -25,7 +26,10 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
-            .service(web::scope("/api").configure(power::routes::config))
+            .service(web::scope("/api")
+                     .configure(power::routes::config)
+                     .configure(source::routes::config)
+            )
             .service(hello)
             .service(echo)
     })

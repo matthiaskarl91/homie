@@ -24,12 +24,13 @@ async fn get_all(pool: web::Data<DbPool>) -> actix_web::Result<impl Responder> {
     Ok(HttpResponse::Ok().json(data))
 }
 
-#[post("/")]
-async fn add_power(pool: web::Data<DbPool>, info: web::Json<PowerForm>) -> actix_web::Result<impl Responder> {
+#[post("/{source_id}")]
+async fn add_power(pool: web::Data<DbPool>, path: web::Path<i32>, info: web::Json<PowerForm>) -> actix_web::Result<impl Responder> {
     web::block(move || {
         let mut conn = pool.get().expect("couldnt get db connection from pool");
+        let source_id = path.into_inner();
         let timestamp = info.timestamp.unwrap_or(Utc::now().naive_utc());
-        insert_new_power(&mut conn, info.value, timestamp)
+        insert_new_power(&mut conn, &info.value, &timestamp, &source_id)
     }).await?
     .map_err(error::ErrorInternalServerError)?;
 
